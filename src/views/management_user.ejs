@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+  
+
+
+<div class="container-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Admin Page</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+                aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Menu
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                        <li><a class="dropdown-item" href="/admin/products/create">Add New User</a></li>
+                        <li><a class="dropdown-item" href="/admin/products">Management</a></li>
+                        <li>
+            
+                        </li>
+                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <table class="table ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">UserName</th>
+                <th scope="col">Gmail</th>
+                <th scope="col">FullName</th>
+                <th scope="col">Loại NV</th>
+                <th scope="col">Ngày tạo</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach((item, index)=>{ %>
+            <tr class= "uid" id="<%= item.uid %>">
+
+                <th  scope="row"><%= item.uid %> </th>
+                <td><%= item.c_name %> </td>
+                <td><%= item.gmail %> </td>
+                <td><%= item.fullname %> </td>
+                <td><%= item.div %> </td>
+                <td><%= item.createdAt %> </td>
+                <td class="" style="display:flex; justify-content: flex-end; align-items: center;">
+                    <a href="/user/<%= item.uid %>/edit" class="btn btn-light">Sửa</a>
+                    <a class="px-2 delete-btn" style="text-decoration: none; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#exampleModal" id="<%= item.uid %>">Xóa</a>
+                </td>
+
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <!-- <button type="button" class="btn btn-primary">Export File</button> -->
+
+    <!-- Modal  -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn xóa khóa học</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc muốn xóa User này
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="delete-now" data-bs-dismiss="modal">Xóa bỏ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden form    -->
+    <form id="hidden-form" method="POST" >
+    </form>
+
+    <%- include('export-file-modal') %>
+</div>
+
+
+
+
+<script>
+
+    let data_from_view = JSON.stringify($('#hidden- input').val())
+    console.log(typeof data_from_view)
+
+    var id
+    var deleteForm = document.getElementById('hidden-form')
+    document.querySelector('.delete-btn').onclick = function (e) {
+        id = e.target.id
+        console.log('iddd',id)
+    }
+    document.getElementById('delete-now').onclick = function () {
+        console.log('iddd',id)
+
+        deleteForm.action = '/user/delete/' + id
+        deleteForm.submit();
+    }
+    
+    
+</script>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
